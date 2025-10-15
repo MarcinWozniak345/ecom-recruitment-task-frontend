@@ -25,6 +25,29 @@ export default function FootballerTable() {
             }).catch((err) => { console.log(err); })
     },[])
 
+    const handleDelete = async (guid: string) => {
+        const confirmed = window.confirm("Jesteś pewien że chcesz usunąć zawodnika?");
+        if (!confirmed) return;
+
+        try {
+            const response = await fetch(`https://localhost:7236/api/Footballers/DeleteFootballer/${guid}`, {
+                method: "DELETE",
+            });
+
+            if (response.ok) {
+                // Remove the deleted player from local state without reloading
+                setFootbalers((prev) => prev.filter((f) => f.guid !== guid));
+            } else {
+                alert("Failed to delete the player. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error deleting player:", error);
+            alert("An error occurred while deleting the player.");
+        }
+    };
+
+
+
     const filtered = footballers.filter((f) =>
         `${f.name} ${f.surname}`.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -34,7 +57,7 @@ export default function FootballerTable() {
     return (
         <div className="container mt-5">
             <div className="text-center mb-4">
-                <h2 className="fw-bold text-primary"> Piłkarze w klubie</h2>
+                <h2 className="fw-bold text-primary"> Zawodnicy w klubie</h2>
                 <p className="text-muted">Widok, zarządzanie, edycja</p>
             </div>
 
@@ -49,7 +72,7 @@ export default function FootballerTable() {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         <button className="btn btn-success px-4">
-                            <a href="/footballer/create" className="bi bi-plus-circle me-2">Add Player</a> 
+                            <a href="/footballer/create" className="bi bi-plus-circle me-2 text-white text-decoration-none"> Dodaj zawodnika</a> 
                         </button>
                     </div>
 
@@ -83,10 +106,13 @@ export default function FootballerTable() {
                                                 >
                                                     <i className="bi bi-eye"></i>
                                                 </button>
-                                                <button className="btn btn-sm btn-outline-primary me-2">
+                                                <button className="btn btn-sm btn-outline-primary me-2"
+                                                    onClick={() => navigate(`/footballer/edit/${player.guid}`)}
+                                                >
                                                     <i className="bi bi-pencil-square"></i>
                                                 </button>
-                                                <button className="btn btn-sm btn-outline-danger">
+                                                <button className="btn btn-sm btn-outline-danger"
+                                                    onClick={() => handleDelete(player.guid)}>
                                                     <i className="bi bi-trash"></i>
                                                 </button>
                                             </td>
@@ -95,7 +121,7 @@ export default function FootballerTable() {
                                 ) : (
                                     <tr>
                                         <td colSpan={7} className="text-center text-muted py-3">
-                                            No footballers found.
+                                            Problem z pobraniem zawodnikow
                                         </td>
                                     </tr>
                                 )}
