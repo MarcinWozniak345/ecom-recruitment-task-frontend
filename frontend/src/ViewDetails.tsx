@@ -44,7 +44,7 @@ export default function ViewDetails() {
             <div className="container text-center mt-5">
                 <p className="text-danger">Nie znaleziono pi³karza.</p>
                 <button className="btn btn-secondary mt-2" onClick={() => navigate(-1)}>
-                    Back
+                    cofnij
                 </button>
             </div>
         );
@@ -56,8 +56,8 @@ export default function ViewDetails() {
                 <div className="row align-items-center">
                     <div className="col-md-4 text-center mb-3 mb-md-0">
                         <img
-                            src={`https://ui-avatars.com/api/?name=${footballer.name}+${footballer.surname}&background=0D6EFD&color=fff&size=200`}
-                            alt={`${footballer.name} ${footballer.surname}`}
+                            src={`https://ui-avatars.com/api/?name=${footballer.number}&background=0D6EFD&color=fff&size=200`}
+                            alt={`Numer ${footballer.number}`}
                             className="rounded-circle border border-3 border-primary shadow-sm"
                             width="160"
                             height="160"
@@ -75,7 +75,7 @@ export default function ViewDetails() {
                             <strong>Pozycja:</strong> {footballer.position}
                         </p>
                         <p className="mb-1">
-                            <strong>Narodowosc:</strong> {footballer.nationality}
+                            <strong>Narodowosc</strong> {footballer.nationality}
                         </p>
                         <p className="mb-1">
                             <strong>Wiek:</strong> {footballer.age}
